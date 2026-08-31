@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visor de PDF</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>📄 Visor de PDF</h1>
+        <p class="subtitle">Visualiza y descarga documentos PDF</p>
+      </header>
+
+      <div class="main-content">
+        <!-- Controles superior -->
+        <div class="controls-top">
+          <div class="upload-section">
+            <label for="pdfFile" class="file-label">
+              <span class="upload-icon">📁</span>
+              <span class="upload-text">Seleccionar PDF</span>
+            </label>
+            <input type="file" id="pdfFile" accept=".pdf" class="file-input" />
+            <span id="fileName" class="file-name"></span>
+          </div>
+        </div>
+
+        <!-- Área de visualización -->
+        <div class="viewer-container">
+          <canvas id="pdfCanvas" class="pdf-canvas"></canvas>
+        </div>
+
+        <!-- Controles de navegación -->
+        <div class="controls-bottom">
+          <div class="nav-controls">
+            <button id="prevBtn" class="btn btn-nav" title="Página anterior">
+              <span>❮</span> Anterior
+            </button>
+
+            <div class="page-info">
+              <input
+                type="number"
+                id="pageNumber"
+                min="1"
+                class="page-input"
+                placeholder="Página"
+              />
+              <span id="totalPages" class="page-total">/ 0</span>
+            </div>
+
+            <button id="nextBtn" class="btn btn-nav" title="Página siguiente">
+              Siguiente <span>❯</span>
+            </button>
+          </div>
+
+          <div class="action-controls">
+            <button id="zoomInBtn" class="btn btn-action" title="Aumentar zoom">
+              🔍+ Zoom +
+            </button>
+
+            <button id="zoomOutBtn" class="btn btn-action" title="Reducir zoom">
+              🔍- Zoom -
+            </button>
+
+            <button
+              id="zoomResetBtn"
+              class="btn btn-action"
+              title="Restablecer zoom"
+            >
+              🔄 Reset
+            </button>
+
+            <button
+              id="downloadBtn"
+              class="btn btn-download"
+              title="Descargar PDF"
+            >
+              ⬇️ Descargar
+            </button>
+          </div>
+        </div>
+
+        <!-- Información de estado -->
+        <div class="status-bar">
+          <span id="status">Carga un PDF para comenzar</span>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <p>Powered by PDF.js | © 2024 Visor de PDF</p>
+      </footer>
+    </div>
+
+    <!-- Cargar PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+      // Establecer el worker de PDF.js
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>
