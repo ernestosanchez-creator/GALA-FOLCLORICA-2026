@@ -3,6 +3,10 @@ let pdfDoc = null;
 let currentPage = 1;
 let totalPages = 0;
 let pdfFileName = "documento.pdf";
+let zoomLevel = 100; // Zoom en porcentaje
+const MIN_ZOOM = 50;
+const MAX_ZOOM = 300;
+const ZOOM_STEP = 25;
 
 // Elementos del DOM
 const pdfCanvas = document.getElementById("pdfCanvas");
@@ -15,17 +19,26 @@ const status = document.getElementById("status");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const downloadBtn = document.getElementById("downloadBtn");
+const zoomInBtn = document.getElementById("zoomInBtn");
+const zoomOutBtn = document.getElementById("zoomOutBtn");
+const resetZoomBtn = document.getElementById("resetZoomBtn");
+const zoomLevelSpan = document.getElementById("zoomLevel");
 
 // Event Listeners
 prevBtn.addEventListener("click", previousPage);
 nextBtn.addEventListener("click", nextPage);
 pageNumber.addEventListener("change", goToPage);
 downloadBtn.addEventListener("click", downloadPdf);
+zoomInBtn.addEventListener("click", zoomIn);
+zoomOutBtn.addEventListener("click", zoomOut);
+resetZoomBtn.addEventListener("click", resetZoom);
 
 // Keyboard shortcuts
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") previousPage();
   if (e.key === "ArrowRight") nextPage();
+  if (e.key === "+") zoomIn();
+  if (e.key === "-") zoomOut();
 });
 
 // Cargar PDF automáticamente al iniciar
@@ -77,6 +90,9 @@ async function renderPage(pageNum) {
     if (viewport.width > containerWidth) {
       scale = containerWidth / viewport.width;
     }
+
+    // Aplicar zoom
+    scale = scale * (zoomLevel / 100);
 
     const finalViewport = page.getViewport({ scale: scale });
 
@@ -198,6 +214,45 @@ function showSuccess(message) {
   status.className = "success";
 }
 
+/**
+ * Aumenta el zoom
+ */
+function zoomIn() {
+  if (zoomLevel < MAX_ZOOM) {
+    zoomLevel = Math.min(zoomLevel + ZOOM_STEP, MAX_ZOOM);
+    updateZoomLevel();
+    renderPage(currentPage);
+  }
+}
+
+/**
+ * Reduce el zoom
+ */
+function zoomOut() {
+  if (zoomLevel > MIN_ZOOM) {
+    zoomLevel = Math.max(zoomLevel - ZOOM_STEP, MIN_ZOOM);
+    updateZoomLevel();
+    renderPage(currentPage);
+  }
+}
+
+/**
+ * Resetea el zoom a 100%
+ */
+function resetZoom() {
+  zoomLevel = 100;
+  updateZoomLevel();
+  renderPage(currentPage);
+}
+
+/**
+ * Actualiza el display del nivel de zoom
+ */
+function updateZoomLevel() {
+  zoomLevelSpan.textContent = `${zoomLevel}%`;
+}
+
 // Inicialización
 updateButtonStates();
 showStatus("Carga un PDF para comenzar");
+updateZoomLevel();
