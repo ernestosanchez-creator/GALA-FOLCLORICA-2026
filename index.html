@@ -3,92 +3,72 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Visor de PDF</title>
+    <title>Gala Folclórica 2026 - Colegio Bautista Lois Hart</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="container">
+      <!-- Header con decoración chilena -->
       <header class="header">
-        <h1>📄 Visor de PDF</h1>
-        <p class="subtitle">Visualiza y descarga documentos PDF</p>
+        <div class="header-decoration">
+          <span class="flag-decoration">🇨🇱</span>
+          <span class="flag-decoration">🇨🇱</span>
+          <span class="flag-decoration">🇨🇱</span>
+        </div>
+        <h1 class="event-title">🎭 GALA FOLCLÓRICA 2026 🎭</h1>
+        <p class="event-subtitle">Colegio Bautista Lois Hart</p>
+        <p class="event-date">11 de Septiembre • 9:30 HRS</p>
+        <p class="event-location">SOKOL - ANTOFAGASTA</p>
+        <div class="header-decoration">
+          <span class="flag-decoration">🇨🇱</span>
+          <span class="flag-decoration">🇨🇱</span>
+          <span class="flag-decoration">🇨🇱</span>
+        </div>
       </header>
 
       <div class="main-content">
-        <!-- Controles superior -->
-        <div class="controls-top">
-          <div class="upload-section">
-            <label for="pdfFile" class="file-label">
-              <span class="upload-icon">📁</span>
-              <span class="upload-text">Seleccionar PDF</span>
-            </label>
-            <input type="file" id="pdfFile" accept=".pdf" class="file-input" />
-            <span id="fileName" class="file-name"></span>
-          </div>
-        </div>
-
-        <!-- Área de visualización -->
+        <!-- Área de visualización del PDF -->
         <div class="viewer-container">
           <canvas id="pdfCanvas" class="pdf-canvas"></canvas>
         </div>
 
         <!-- Controles de navegación -->
         <div class="controls-bottom">
-          <div class="nav-controls">
-            <button id="prevBtn" class="btn btn-nav" title="Página anterior">
-              <span>❮</span> Anterior
-            </button>
+          <button id="prevBtn" class="btn btn-nav" title="Página anterior">
+            <span>❮</span> Anterior
+          </button>
 
-            <div class="page-info">
-              <input
-                type="number"
-                id="pageNumber"
-                min="1"
-                class="page-input"
-                placeholder="Página"
-              />
-              <span id="totalPages" class="page-total">/ 0</span>
-            </div>
-
-            <button id="nextBtn" class="btn btn-nav" title="Página siguiente">
-              Siguiente <span>❯</span>
-            </button>
+          <div class="page-info">
+            <input
+              type="number"
+              id="pageNumber"
+              min="1"
+              class="page-input"
+              placeholder="Página"
+            />
+            <span id="totalPages" class="page-total">/ 0</span>
           </div>
 
-          <div class="action-controls">
-            <button id="zoomInBtn" class="btn btn-action" title="Aumentar zoom">
-              🔍+ Zoom +
-            </button>
+          <button id="nextBtn" class="btn btn-nav" title="Página siguiente">
+            Siguiente <span>❯</span>
+          </button>
 
-            <button id="zoomOutBtn" class="btn btn-action" title="Reducir zoom">
-              🔍- Zoom -
-            </button>
-
-            <button
-              id="zoomResetBtn"
-              class="btn btn-action"
-              title="Restablecer zoom"
-            >
-              🔄 Reset
-            </button>
-
-            <button
-              id="downloadBtn"
-              class="btn btn-download"
-              title="Descargar PDF"
-            >
-              ⬇️ Descargar
-            </button>
-          </div>
+          <button id="downloadBtn" class="btn btn-download" title="Descargar">
+            ⬇️ Descargar
+          </button>
         </div>
 
         <!-- Información de estado -->
         <div class="status-bar">
-          <span id="status">Carga un PDF para comenzar</span>
+          <span id="status">Cargando documento...</span>
         </div>
       </div>
 
       <footer class="footer">
-        <p>Powered by PDF.js | © 2024 Visor de PDF</p>
+        <p>
+          🇨🇱 Celebrando las Raíces Folclóricas de Chile • 11 de Septiembre 2026
+          🇨🇱
+        </p>
       </footer>
     </div>
 

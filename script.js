@@ -2,14 +2,11 @@
 let pdfDoc = null;
 let currentPage = 1;
 let totalPages = 0;
-let zoomLevel = 1;
-let currentPdfFile = null;
+let pdfFileName = "documento.pdf";
 
 // Elementos del DOM
 const pdfCanvas = document.getElementById("pdfCanvas");
 const ctx = pdfCanvas.getContext("2d");
-const pdfFile = document.getElementById("pdfFile");
-const fileName = document.getElementById("fileName");
 const pageNumber = document.getElementById("pageNumber");
 const totalPagesSpan = document.getElementById("totalPages");
 const status = document.getElementById("status");
@@ -17,73 +14,49 @@ const status = document.getElementById("status");
 // Botones
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
-const zoomInBtn = document.getElementById("zoomInBtn");
-const zoomOutBtn = document.getElementById("zoomOutBtn");
-const zoomResetBtn = document.getElementById("zoomResetBtn");
 const downloadBtn = document.getElementById("downloadBtn");
 
 // Event Listeners
-pdfFile.addEventListener("change", handleFileSelect);
 prevBtn.addEventListener("click", previousPage);
 nextBtn.addEventListener("click", nextPage);
 pageNumber.addEventListener("change", goToPage);
-zoomInBtn.addEventListener("click", () => zoomPdf(1.2));
-zoomOutBtn.addEventListener("click", () => zoomPdf(0.8));
-zoomResetBtn.addEventListener("click", resetZoom);
 downloadBtn.addEventListener("click", downloadPdf);
 
 // Keyboard shortcuts
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") previousPage();
   if (e.key === "ArrowRight") nextPage();
-  if (e.key === "+" || e.key === "=") zoomPdf(1.2);
-  if (e.key === "-") zoomPdf(0.8);
 });
 
+// Cargar PDF automáticamente al iniciar
+window.addEventListener("load", loadPdfFromUrl);
+
 /**
- * Maneja la selección de archivo PDF
+ * Carga el PDF automáticamente desde la carpeta /pdf
  */
-async function handleFileSelect(e) {
-  const file = e.target.files[0];
-
-  if (!file) return;
-
-  if (file.type !== "application/pdf") {
-    showError("Por favor, selecciona un archivo PDF válido");
-    return;
-  }
-
-  currentPdfFile = file;
-  fileName.textContent = `📄 ${file.name}`;
-
-  const fileReader = new FileReader();
-
-  fileReader.onload = async (event) => {
-    try {
-      showStatus("Cargando PDF...");
-
-      const typedarray = new Uint8Array(event.target.result);
-      pdfDoc = await pdfjsLib.getDocument(typedarray).promise;
-      totalPages = pdfDoc.numPages;
-
-      currentPage = 1;
-      zoomLevel = 1;
-
-      updatePageInfo();
-      renderPage(currentPage);
-
-      showSuccess("PDF cargado correctamente");
-    } catch (error) {
-      showError(`Error al cargar el PDF: ${error.message}`);
-      console.error("Error loading PDF:", error);
+async function loadPdfFromUrl() {
+  try {
+    showStatus("Cargando documento de la Gala Folclórica...");
+    
+    const response = await fetch(`./pdf/${pdfFileName}`);
+    if (!response.ok) {
+      throw new Error("No se encontró el documento PDF");
     }
-  };
+    
+    const arrayBuffer = await response.arrayBuffer();
+    const typedarray = new Uint8Array(arrayBuffer);
+    pdfDoc = await pdfjsLib.getDocument(typedarray).promise;
+    totalPages = pdfDoc.numPages;
 
-  fileReader.onerror = () => {
-    showError("Error al leer el archivo");
-  };
+    currentPage = 1;
+    updatePageInfo();
+    renderPage(currentPage);
 
-  fileReader.readAsArrayBuffer(file);
+    showSuccess("✅ Documento cargado correctamente");
+  } catch (error) {
+    showError(`Error al cargar el documento: ${error.message}`);
+    console.error("Error loading PDF:", error);
+  }
 }
 
 /**
@@ -94,19 +67,25 @@ async function renderPage(pageNum) {
 
   try {
     const page = await pdfDoc.getPage(pageNum);
+    
+    // Renderizar con zoom ajustado al contenedor
+    const containerWidth = pdfCanvas.parentElement.clientWidth - 80;
+    const viewport = page.getViewport({ scale: 2 });
+    
+    // Calcular escala para que quepa en el contenedor
+    let scale = 1;
+    if (viewport.width > containerWidth) {
+      scale = containerWidth / viewport.width;
+    }
+    
+    const finalViewport = page.getViewport({ scale: scale });
 
-    // Configurar el viewport
-    const baseViewport = page.getViewport({ scale: 1 });
-    const viewport = page.getViewport({ scale: zoomLevel });
+    pdfCanvas.width = finalViewport.width;
+    pdfCanvas.height = finalViewport.height;
 
-    // Ajustar el canvas
-    pdfCanvas.width = viewport.width;
-    pdfCanvas.height = viewport.height;
-
-    // Renderizar
     const renderContext = {
       canvasContext: ctx,
-      viewport: viewport,
+      viewport: finalViewport,
     };
 
     await page.render(renderContext).promise;
@@ -117,7 +96,7 @@ async function renderPage(pageNum) {
 
     showStatus(`Página ${pageNum} de ${totalPages}`);
   } catch (error) {
-    showError(`Error al renderizar la página: ${error.message}`);
+    showError(`Error al cargar la página: ${error.message}`);
     console.error("Error rendering page:", error);
   }
 }
@@ -156,48 +135,22 @@ function goToPage() {
 }
 
 /**
- * Aplica zoom al PDF
- */
-function zoomPdf(factor) {
-  if (!pdfDoc) return;
-
-  const newZoom = zoomLevel * factor;
-  if (newZoom >= 0.5 && newZoom <= 3) {
-    zoomLevel = newZoom;
-    renderPage(currentPage);
-  } else {
-    showError("Nivel de zoom no válido");
-  }
-}
-
-/**
- * Reinicia el zoom
- */
-function resetZoom() {
-  zoomLevel = 1;
-  renderPage(currentPage);
-  showStatus("Zoom reiniciado");
-}
-
-/**
  * Descarga el PDF
  */
 function downloadPdf() {
-  if (!currentPdfFile) {
-    showError("No hay PDF cargado para descargar");
+  if (!pdfDoc) {
+    showError("No hay documento para descargar");
     return;
   }
 
-  const url = URL.createObjectURL(currentPdfFile);
   const link = document.createElement("a");
-  link.href = url;
-  link.download = currentPdfFile.name;
+  link.href = `./pdf/${pdfFileName}`;
+  link.download = pdfFileName;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  URL.revokeObjectURL(url);
 
-  showSuccess("Descarga iniciada");
+  showSuccess("✅ Descarga iniciada");
 }
 
 /**
