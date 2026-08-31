@@ -81,9 +81,9 @@ async function renderPage(pageNum) {
   try {
     const page = await pdfDoc.getPage(pageNum);
 
-    // Renderizar con zoom ajustado al contenedor
+    // Renderizar con escala alta para mejor calidad
     const containerWidth = pdfCanvas.parentElement.clientWidth - 80;
-    const viewport = page.getViewport({ scale: 2 });
+    const viewport = page.getViewport({ scale: 3.5 });
 
     // Calcular escala para que quepa en el contenedor
     let scale = 1;
