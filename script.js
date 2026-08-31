@@ -3,7 +3,7 @@ let pdfDoc = null;
 let currentPage = 1;
 let totalPages = 0;
 let pdfFileName = "documento.pdf";
-let zoomLevel = 100; // Zoom en porcentaje
+let zoomLevel = 150; // Zoom en porcentaje - Inicia en 150% para mejor nitidez
 const MIN_ZOOM = 50;
 const MAX_ZOOM = 300;
 const ZOOM_STEP = 25;
@@ -81,9 +81,9 @@ async function renderPage(pageNum) {
   try {
     const page = await pdfDoc.getPage(pageNum);
 
-    // Renderizar con escala alta para mejor calidad
+    // Renderizar con escala balanceada para mejor calidad
     const containerWidth = pdfCanvas.parentElement.clientWidth - 80;
-    const viewport = page.getViewport({ scale: 3.5 });
+    const viewport = page.getViewport({ scale: 2.5 });
 
     // Calcular escala para que quepa en el contenedor
     let scale = 1;
