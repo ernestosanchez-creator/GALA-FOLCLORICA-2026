@@ -37,12 +37,12 @@ window.addEventListener("load", loadPdfFromUrl);
 async function loadPdfFromUrl() {
   try {
     showStatus("Cargando documento de la Gala Folclórica...");
-    
+
     const response = await fetch(`./pdf/${pdfFileName}`);
     if (!response.ok) {
       throw new Error("No se encontró el documento PDF");
     }
-    
+
     const arrayBuffer = await response.arrayBuffer();
     const typedarray = new Uint8Array(arrayBuffer);
     pdfDoc = await pdfjsLib.getDocument(typedarray).promise;
@@ -67,17 +67,17 @@ async function renderPage(pageNum) {
 
   try {
     const page = await pdfDoc.getPage(pageNum);
-    
+
     // Renderizar con zoom ajustado al contenedor
     const containerWidth = pdfCanvas.parentElement.clientWidth - 80;
     const viewport = page.getViewport({ scale: 2 });
-    
+
     // Calcular escala para que quepa en el contenedor
     let scale = 1;
     if (viewport.width > containerWidth) {
       scale = containerWidth / viewport.width;
     }
-    
+
     const finalViewport = page.getViewport({ scale: scale });
 
     pdfCanvas.width = finalViewport.width;
