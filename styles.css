@@ -341,22 +341,31 @@ body {
   }
 
   .main-content {
-    padding: 20px;
+    padding: 15px;
+    gap: 12px;
   }
 
   .controls-bottom {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 12px;
+    flex-wrap: wrap;
   }
 
   .nav-controls,
   .action-controls {
-    width: 100%;
+    width: auto;
     justify-content: center;
   }
 
   .viewer-container {
+    flex: 1;
     min-height: 400px;
-    padding: 20px;
+    padding: 15px;
+  }
+
+  .zoom-controls {
+    padding: 10px;
+    gap: 8px;
   }
 
   .upload-section {
@@ -377,33 +386,86 @@ body {
 
 @media (max-width: 480px) {
   .header {
-    padding: 20px 15px;
+    padding: 15px 10px;
   }
 
   .header h1 {
     font-size: 1.3rem;
+    margin-bottom: 8px;
   }
 
   .header .subtitle {
     font-size: 0.85rem;
   }
 
+  .header p {
+    margin: 3px 0;
+    font-size: 0.75rem;
+  }
+
   .main-content {
-    padding: 15px;
-    gap: 15px;
+    padding: 10px;
+    gap: 8px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   .btn {
-    padding: 8px 12px;
-    font-size: 0.8rem;
+    padding: 8px 10px;
+    font-size: 0.75rem;
   }
 
   .viewer-container {
-    min-height: 300px;
+    flex: 1;
+    min-height: auto;
+    padding: 5px;
+    border: 2px solid #d71920;
+  }
+
+  .pdf-canvas {
+    width: 100%;
+    height: auto;
   }
 
   .controls-bottom {
-    gap: 10px;
+    gap: 6px;
+    padding: 10px;
+    flex-wrap: wrap;
+  }
+
+  .zoom-controls {
+    width: 100%;
+    padding: 8px;
+    gap: 6px;
+  }
+
+  .btn-zoom {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+  }
+
+  .zoom-level {
+    font-size: 0.85rem;
+  }
+
+  .page-info {
+    gap: 4px;
+  }
+
+  .page-input {
+    padding: 4px 6px;
+    font-size: 0.75rem;
+  }
+
+  .status-bar {
+    padding: 8px 10px;
+    font-size: 0.75rem;
+  }
+
+  .footer {
+    padding: 12px 8px;
+    font-size: 0.75rem;
   }
 }
 
