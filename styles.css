@@ -44,23 +44,16 @@ body {
 
 /* Header */
 .header {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--primary-dark) 100%
-  );
+  background: linear-gradient(135deg, #d71920 0%, #c41810 100%);
   color: white;
   padding: 40px 30px;
   text-align: center;
-  border-bottom: 4px solid var(--accent-color);
+  border-bottom: 5px solid #003d82;
   position: relative;
 }
 
 .header-decoration {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  letter-spacing: 15px;
-  animation: float 3s ease-in-out infinite;
+  display: none;
 }
 
 .flag-decoration {
@@ -293,11 +286,7 @@ body {
 
 /* Footer */
 .footer {
-  background: linear-gradient(
-    135deg,
-    #d71920 0%,
-    #003d82 100%
-  );
+  background: linear-gradient(135deg, #d71920 0%, #003d82 100%);
   padding: 20px;
   text-align: center;
   color: white;
