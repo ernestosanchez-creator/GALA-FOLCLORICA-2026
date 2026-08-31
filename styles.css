@@ -419,7 +419,7 @@ body {
   .viewer-container {
     flex: 1;
     min-height: auto;
-    padding: 5px;
+    padding: 2px;
     border: 2px solid #d71920;
   }
 
