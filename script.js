@@ -74,4 +74,4 @@ function downloadPdf() {
   document.body.removeChild(link);
 }
 
-downloadBtn.disabled = false;
+downloadBtn.disabled = true;
