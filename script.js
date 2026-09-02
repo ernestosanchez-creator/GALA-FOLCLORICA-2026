@@ -21,14 +21,7 @@ window.addEventListener("load", loadPdfFromUrl);
  */
 async function loadPdfFromUrl() {
   try {
-    const response = await fetch(`./pdf/${pdfFileName}`);
-    if (!response.ok) {
-      throw new Error("No se encontró el documento PDF");
-    }
-
-    const arrayBuffer = await response.arrayBuffer();
-    const typedarray = new Uint8Array(arrayBuffer);
-    pdfDoc = await pdfjsLib.getDocument(typedarray).promise;
+    pdfDoc = await pdfjsLib.getDocument(`./pdf/${pdfFileName}`).promise;
     totalPages = pdfDoc.numPages;
 
     currentPage = 1;
@@ -69,11 +62,6 @@ async function renderPage(pageNum) {
  * Descarga el PDF
  */
 function downloadPdf() {
-  if (!pdfDoc) {
-    console.error("No hay documento para descargar");
-    return;
-  }
-
   const link = document.createElement("a");
   link.href = `./pdf/${pdfFileName}`;
   link.download = pdfFileName;
@@ -82,5 +70,4 @@ function downloadPdf() {
   document.body.removeChild(link);
 }
 
-// Inicialización
-downloadBtn.disabled = true;
+downloadBtn.disabled = false;
