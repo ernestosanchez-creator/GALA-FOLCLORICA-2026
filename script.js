@@ -2,7 +2,7 @@
 let pdfDoc = null;
 let currentPage = 1;
 let totalPages = 0;
-let pdfFileName = "Programa.pdf";
+let pdfFileName = "GalaFolclorica.pdf";
 const PDF_SCALE = 3.0;
 const MOBILE_SCALE = 0.75;
 
