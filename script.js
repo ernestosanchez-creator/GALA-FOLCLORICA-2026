@@ -4,7 +4,7 @@ let currentPage = 1;
 let totalPages = 0;
 let pdfFileName = "Programa.pdf";
 const PDF_SCALE = 3.0;
-const MOBILE_SCALE = 1.0;
+const MOBILE_SCALE = 0.75;
 
 // Elementos del DOM
 const pdfCanvas = document.getElementById("pdfCanvas");
@@ -42,7 +42,7 @@ async function renderPage(pageNum) {
   try {
     const page = await pdfDoc.getPage(pageNum);
 
-    const renderScale = window.matchMedia("(max-width: 480px)").matches
+    const renderScale = window.matchMedia("(max-width: 768px)").matches
       ? MOBILE_SCALE
       : PDF_SCALE;
     const finalViewport = page.getViewport({ scale: renderScale });
