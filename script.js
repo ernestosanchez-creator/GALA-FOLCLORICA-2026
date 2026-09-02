@@ -2,7 +2,7 @@
 let pdfDoc = null;
 let currentPage = 1;
 let totalPages = 0;
-let pdfFileName = "definitivo.pdf";
+let pdfFileName = "Programa.pdf";
 const PDF_SCALE = 3.0;
 
 // Elementos del DOM
