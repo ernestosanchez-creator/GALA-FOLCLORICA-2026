@@ -137,7 +137,7 @@ Modifica `script.js` para cargar un PDF automáticamente:
 
 ```javascript
 window.addEventListener("load", () => {
-  fetch("pdf/documento.pdf")
+  fetch("pdf/definitivo.pdf")
     .then((res) => res.arrayBuffer())
     .then((data) => loadPdfFromArray(data));
 });
